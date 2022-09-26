@@ -32,7 +32,10 @@ export const styles=StyleSheet.create({
         fontSize:20,
     },
     inputBorderStyling:{
-        borderColor:'black', borderWidth:2, borderRadius:10, margin:10, padding:10
+        borderColor:'black', borderWidth:2, borderRadius:10, margin:10, padding:4
+    },
+    pickerBorderStyling:{
+        borderColor:'black', borderWidth:2, borderRadius:10, margin:10
     }
 });
 

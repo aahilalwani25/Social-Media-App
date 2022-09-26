@@ -60,6 +60,13 @@ app.get('/api/userpost/:user_id',(req,res)=>{
     })
 })
 
+app.get('/api/getUserImageAndUsername/:u_id',(req,res)=>{
+    connection.query(`select u_name, u_profile_pic from user where u_id=${req.params.u_id};`,(err, row)=>{
+        if(err) console.log(err);
+        res.send(row);
+    })
+})
+
 app.listen(3000,()=>{
     console.log('http://localhost:3000/api/user');
 })

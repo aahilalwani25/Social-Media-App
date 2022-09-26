@@ -50,8 +50,8 @@ export  class Home extends React.Component{
         return(
             <View>
                 <FlatList
-                data={this.postArray}
-                renderItem={(item)=><PostLayout item={item}/>}
+                data={[1,2,3,4]}
+                renderItem={(item)=><PostLayout/>}
                 />
             </View>
         );

@@ -5,6 +5,7 @@ import LoginScreen from "../../MVC/View/User/Register and Login/LoginScreen";
 import SignUpScreen from "../../MVC/View/User/Register and Login/SignUpScreen";
 import StartingScreen from "../../MVC/View/StartingScreen";
 import Dashboard from "../../MVC/View/User/Dashboard";
+import Location from "../../MVC/View/User/AddLocation";
 
 
 
@@ -77,6 +78,13 @@ export default function UserScreenStack(){
                 <Stack.Screen 
                 component={Dashboard}
                 name='Dashboard'
+                options={{
+                    headerShown:false,
+                }}/>
+
+                <Stack.Screen 
+                component={Location}
+                name='AddLocation'
                 options={{
                     headerShown:false,
                 }}/>
