@@ -7,4 +7,5 @@ The features implemented so far:
 4. Create Post Layout
 
 The database used: MYSQL
-server language: nodejs, expressjs, javascript
+
+Server language: nodejs, expressjs, javascript
