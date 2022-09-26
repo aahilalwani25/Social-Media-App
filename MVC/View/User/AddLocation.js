@@ -1,22 +1,63 @@
 import React from "react";
-import { View } from "react-native";
-import MapView from "react-native-maps";
+import { Dimensions, View } from "react-native";
+import MapView, { Marker } from "react-native-maps";
 import { styles } from "../../../StyleSheet";
+import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
+
+const {width,height}=Dimensions.get('screen');
 
 function Map(){
     return(
+        <View>
+
+            <GooglePlacesAutocomplete
+            
+                query={{
+                    key:'',
+                    language:'en'
+                }}
+                placeholder={'Search Place'}
+                styles={{
+                    container:{
+                        flex:1
+                    },
+                    textInput:{
+                        width:width,
+                        height:100,
+                        paddingTop:50,
+                        borderRadius:20
+                    },
+                    textInputContainer:{
+                        borderColor:'grey',
+                        borderWidth:2
+                    }
+                }}
+                />
         
             <MapView
-            style={{height:'100%', width:'100%'}}
+            style={{height:height, width:width, top:100}}
             mapType='satellite'
             initialRegion={{
-                latitude:30.3753,
-                longitude:69.3451,
+                latitude:24.8607,
+                longitude:67.0011,
+                latitudeDelta:0.03,
+                longitudeDelta:0.03,
             }}
             provider='google'
             >
-
+                
+                <Marker
+                coordinate={{
+                    latitude:24.8607,
+                    longitude:67.0011,
+                    latitudeDelta:0.03,
+                    longitudeDelta:0.03,
+                }}
+                title={'Karachi'}
+                />
             </MapView>
+            
+        </View>
         
     );
 }
