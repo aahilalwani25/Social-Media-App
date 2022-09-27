@@ -1,10 +1,11 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import React, { useImperativeHandle, useState } from "react";
+import React, { useEffect, useImperativeHandle, useRef, useState } from "react";
 import { View, Text, Image, Touchable, TouchableOpacity } from "react-native";
 import { Picker } from "@react-native-picker/picker";
 import { TextInput } from "react-native-gesture-handler";
 import { styles } from "../../../StyleSheet";
 import iconSet from "@expo/vector-icons/build/Fontisto";
+import { PostController } from "../../Controller/PostController";
 
 
 var date = new Date();
@@ -14,7 +15,6 @@ var yyyy = date.getFullYear();
 
 let today = dd + '/' + mm + '/' + yyyy;
 let myTime = date.getHours()+':'+date.getMinutes()+':'+ date.getSeconds();
-let user_id=AsyncStorage.getItem('id');
 
 
 const UserPictureImage= React.forwardRef((image, ref)=>{
@@ -35,9 +35,21 @@ const UserPictureImage= React.forwardRef((image, ref)=>{
     
 })
 
-const PostPictureImage= React.forwardRef((image, ref)=>{
+const PostPictureImage= React.forwardRef((props, ref)=>{
     
-    if(image!=null){
+
+    const [show,setShow]=useState(null);
+    const [img, setImg] =useState(null);
+
+    useImperativeHandle(ref,()=>({
+        openImage:()=>setShow(true),
+        closeImage:()=>setShow(false),
+        image:(image)=>setImg(image),
+    }))
+
+    if(show==null){
+        return;
+    }else if(!show){
         return(
             <Image source={require('../../../assets/default-user-image.png')} 
                 style={{borderColor:'black', borderWidth:2, borderRadius:50, height:50, width:50
@@ -45,8 +57,8 @@ const PostPictureImage= React.forwardRef((image, ref)=>{
         );
     }else{
         return(
-            <Image source={require('../../../assets/default-user-image.png')} 
-                style={{borderColor:'black', borderWidth:2, borderRadius:50, height:50, width:50
+            <Image source={{uri:img}} 
+                style={{borderColor:'black', borderWidth:2, height:100, width:100
                 }}/>
         );
     }
@@ -55,21 +67,45 @@ const PostPictureImage= React.forwardRef((image, ref)=>{
 
 function CreatePostLayout({props}){
 
+    let postController=new PostController();
     const [curr_date, setDate]=useState(today);
     const [curr_time,setTime]=useState(myTime);
-    const[audience,setAudience]=useState(null);
+    const [audience,setAudience]=useState(null);
+    const [u_id, setId]=useState(null);
     const [post_description,setDescription]=useState(null);
     const [u_profile_pic, setUserImage]=useState(null);
     const [u_name,setUsername]=useState('Username');
     const [post_picture, setPostImage]=useState(null);
     const [location, setLocation]=useState(null);
+    //making references
+    const postImageRef=useRef();
+
+    useEffect(()=>{
+        AsyncStorage.getItem('id')
+        .then(id=>{
+            if(id){
+                setId(id);
+                getIdAndUsername(id);
+            }
+        })
+    },[])
+
+    const getIdAndUsername=(u)=>{
+        postController.fetchUsernameAndImage(u)
+        .then(res=>res.user_name)
+        .then((data)=>{
+            console.log(data);
+            setUsername(data);
+        })
+    }
+
 
     return(
             <View style={{flexDirection:'column', borderColor:'black', borderWidth:2, borderRadius:20, alignItems:'flex-start'}}>
 
                 <View style={{flexDirection:'row', margin:5}}>
                     {/*User Image*/}
-                    <UserPictureImage ref={React.createRef()}
+                    <UserPictureImage ref={postImageRef}
                     />
                     
                     {/* User Info*/}
@@ -96,6 +132,8 @@ function CreatePostLayout({props}){
 
                 </View>
 
+                <PostPictureImage ref={postImageRef} />
+
                 
                 <View style={[styles.inputBorderStyling, {width:'90%', justifyContent:'center'}]}>
                     <TextInput multiline={true}
@@ -105,10 +143,39 @@ function CreatePostLayout({props}){
 
                 <View style={[styles.row]}>
                     <iconSet.Button name="picture" iconStyle={{justifyContent:'center', backgroundColor:'black'}}
-                    style={{backgroundColor:'black'}}/>
+                    style={{backgroundColor:'black'}}
+                    onPress={()=>{
+                        postController.openGallery().then(res=>res.uri)
+                        .then((data)=>{
+                            if(data){
+                                //console.log(data);
+                                setPostImage(data);
+                                postImageRef.current.image(post_picture);
+                                postImageRef.current.openImage()
+                            }else{
+                                postImageRef.current.closeImage();
+                            }
+                            
+                        }).catch((err)=>console.log(err));
+                    }}/>
 
                     <iconSet.Button name="camera" iconStyle={{justifyContent:'center', backgroundColor:'black'}}
-                    style={{backgroundColor:'black'}}/>
+                    style={{backgroundColor:'black'}}
+                    onPress={()=>{
+                        postController.openCamera().then(res=>res.uri)
+                        .then((data)=>{
+                            if(data){
+                                //console.log(data);
+                                setPostImage(data);
+                                postImageRef.current.image(post_picture);
+                                postImageRef.current.openImage();
+                            }else{
+                                postImageRef.current.closeImage();
+                            }
+                            
+                        }).catch((err)=>console.log(err));
+                    }}
+                    />
 
                     <iconSet.Button
                     onPress={()=>props.navigation.navigate('AddLocation')}
@@ -117,7 +184,9 @@ function CreatePostLayout({props}){
                 </View>
 
                 <View style={[styles.inputBorderStyling, {backgroundColor:'blue', alignItems:'center'}]}>
-                    <TouchableOpacity>
+                    <TouchableOpacity
+                    onPress={postController.createPost.bind(this)}
+                    >
                         <Text style={[{color:'white'}, styles.buttonTextSize]}>Create Post</Text>
                     </TouchableOpacity>
                 </View>
@@ -126,6 +195,7 @@ function CreatePostLayout({props}){
 }
 
 export default class CreatePost extends React.Component{
+
 
     render(){
         return(

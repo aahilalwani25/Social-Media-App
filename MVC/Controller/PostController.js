@@ -1,4 +1,5 @@
 import axios from "axios";
+import * as ImagePicker from 'expo-image-picker';
 
 export class PostController{
 
@@ -10,10 +11,37 @@ export class PostController{
         return fetchPosts;
     }
 
+    async openGallery(){
+        
+        //returns object
+        let result=await ImagePicker.launchImageLibraryAsync({
+            mediaTypes: ImagePicker.MediaTypeOptions.Images,
+            //allowsEditing: true,
+            allowsMultipleSelection:true,
+            aspect: [4, 3],
+            quality: 1,
+            });
+        console.log(result)
+        //if pic not selected, return uri
+        if(!result.cancelled) return result;
+    }
+
+    async openCamera(){
+        let result=await ImagePicker.launchCameraAsync({
+            mediaTypes: ImagePicker.MediaTypeOptions.All,
+            allowsEditing:true,
+            aspect: [4, 3],
+            quality: 1,
+        });
+
+        if(!result.cancelled) return result;
+
+    }
 
     //create user post here
-    createPost(){
+    async createPost(user_id, audience, post_description, post_picture, post_video, curr_date, curr_time, location){
 
+        const result=await axios.get('')
     }
 
     //fetch username and image
@@ -24,7 +52,6 @@ export class PostController{
                 user_name:null, user_img:null
             };
         if(res){
-
             res.forEach(obj => {
                 for(const key in obj){
                     if(key==='u_profile_pic') myobj.user_img= obj[key];

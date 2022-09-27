@@ -61,10 +61,14 @@ app.get('/api/userpost/:user_id',(req,res)=>{
 })
 
 app.get('/api/getUserImageAndUsername/:u_id',(req,res)=>{
-    connection.query(`select u_name, u_profile_pic from user where u_id=${req.params.u_id};`,(err, row)=>{
+    connection.query(`select u_name, u_profile_pic from user where u_id=${parseInt(req.params.u_id)};`,(err, row)=>{
         if(err) console.log(err);
         res.send(row);
     })
+})
+
+app.get('/api/post/:user_id/:audience/:post_description/:post_picture/:post_video/:location', (req,res)=>{
+    connection.query(``)
 })
 
 app.listen(3000,()=>{
