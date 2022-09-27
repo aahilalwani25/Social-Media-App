@@ -1,6 +1,6 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import React, { useEffect, useImperativeHandle, useRef, useState } from "react";
-import { View, Text, Image, Touchable, TouchableOpacity, Dimensions } from "react-native";
+import { View, Text, Image, Touchable, TouchableOpacity, Dimensions, Alert } from "react-native";
 import { Picker } from "@react-native-picker/picker";
 import { TextInput } from "react-native-gesture-handler";
 import { styles } from "../../../StyleSheet";
@@ -15,6 +15,7 @@ var yyyy = date.getFullYear();
 
 let today = dd + '/' + mm + '/' + yyyy;
 let myTime = date.getHours()+':'+date.getMinutes()+':'+ date.getSeconds();
+
 
 
 const UserPictureImage= React.forwardRef((image, ref)=>{
@@ -94,11 +95,11 @@ function CreatePostLayout({props}){
 
     const getIdAndUsername=(u)=>{
         postController.fetchUsernameAndImage(u)
-        .then(res=>res.user_name)
-        .then((data)=>{
-            console.log(data);
-            setUsername(data);
-        })
+        .then(res=>{
+            setUsername(res.user_name);
+            setUserImage(res.user_img);
+        });
+        
     }
 
 
@@ -187,7 +188,16 @@ function CreatePostLayout({props}){
 
                 <View style={[styles.inputBorderStyling, {backgroundColor:'blue', alignItems:'center'}]}>
                     <TouchableOpacity
-                    onPress={postController.createPost.bind(this)}
+                    onPress={()=>postController.createPost(u_id,audience,post_description,post_picture,
+                        null, location).then(res=>res.valueOf())
+                        .then(data=>{
+                            if(data){
+                                Alert.alert('Post Created Successfully!');
+                            }else{
+                                Alert.alert('Post NOT Created!');
+                            }
+                        }).catch(err=>console.log(err))
+                    }
                     >
                         <Text style={[{color:'white'}, styles.buttonTextSize]}>Create Post</Text>
                     </TouchableOpacity>

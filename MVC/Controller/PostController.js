@@ -1,5 +1,6 @@
 import axios from "axios";
 import * as ImagePicker from 'expo-image-picker';
+import { Post } from "../Model/Post";
 
 export class PostController{
 
@@ -39,11 +40,19 @@ export class PostController{
     }
 
     //create user post here
-    async createPost(user_id, audience, post_description, post_picture, post_video, curr_date, curr_time, location){
+    async createPost(user_id, audience, post_description, post_picture, post_video, location){
 
-        const result=await axios.get(`http://192.168.2.106:3000/`+
-        `${user_id}/${audience}/${post_description}/${post_picture}/`+
-        `${post_video}/${curr_date}/${curr_time}/${location}`);
+        let post=new Post();
+        post.setDescription(post_description);
+        post.setPic(post_picture);
+        post.setLocation(location);
+        post.setAudience(audience);
+        post.setVideo(post_video);
+
+
+        const result=await axios.get(`http://192.168.2.106:3000/api/post/`+
+        `${user_id}/${post.getAudience()}/${post.getDescription()}/${post.getPic()}/`+
+        `${post.getVideo()}/${post.getLocation()}`);
         const res=result.data;
 
         if(res){
@@ -51,6 +60,8 @@ export class PostController{
         }
         return false;
     }
+
+
 
     //fetch username and image
     async fetchUsernameAndImage(id){
