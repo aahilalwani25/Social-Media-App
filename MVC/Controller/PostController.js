@@ -21,7 +21,7 @@ export class PostController{
             aspect: [4, 3],
             quality: 1,
             });
-        console.log(result)
+        
         //if pic not selected, return uri
         if(!result.cancelled) return result;
     }
@@ -41,7 +41,15 @@ export class PostController{
     //create user post here
     async createPost(user_id, audience, post_description, post_picture, post_video, curr_date, curr_time, location){
 
-        const result=await axios.get('')
+        const result=await axios.get(`http://192.168.2.106:3000/`+
+        `${user_id}/${audience}/${post_description}/${post_picture}/`+
+        `${post_video}/${curr_date}/${curr_time}/${location}`);
+        const res=result.data;
+
+        if(res){
+            return true;
+        }
+        return false;
     }
 
     //fetch username and image

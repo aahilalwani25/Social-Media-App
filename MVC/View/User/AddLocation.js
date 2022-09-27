@@ -3,9 +3,6 @@ import { Dimensions, SafeAreaView, View } from "react-native";
 import MapView, { Marker } from "react-native-maps";
 import { styles } from "../../../StyleSheet";
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
-import iconSet from "@expo/vector-icons/build/Fontisto";
-
-
 
 
 const {width,height}=Dimensions.get('screen');
@@ -19,8 +16,7 @@ function Map(){
                     key:'AIzaSyDHjnHmIMwBOtzMbNV7SuNIjgCxvo8jceU',
                     language:'en'
                 }}
-                currentLocation={true}
-                currentLocationLabel='Current Location'
+                
                 isRowScrollable={true}
                 placeholder={'Search Place'}
                 fetchDetails={true}

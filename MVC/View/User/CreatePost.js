@@ -1,6 +1,6 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import React, { useEffect, useImperativeHandle, useRef, useState } from "react";
-import { View, Text, Image, Touchable, TouchableOpacity } from "react-native";
+import { View, Text, Image, Touchable, TouchableOpacity, Dimensions } from "react-native";
 import { Picker } from "@react-native-picker/picker";
 import { TextInput } from "react-native-gesture-handler";
 import { styles } from "../../../StyleSheet";
@@ -58,7 +58,9 @@ const PostPictureImage= React.forwardRef((props, ref)=>{
     }else{
         return(
             <Image source={{uri:img}} 
-                style={{borderColor:'black', borderWidth:2, height:100, width:100
+                style={{borderColor:'black', borderWidth:2, 
+                height:400,
+                width:Dimensions.get('screen').width,
                 }}/>
         );
     }
@@ -150,7 +152,7 @@ function CreatePostLayout({props}){
                             if(data){
                                 //console.log(data);
                                 setPostImage(data);
-                                postImageRef.current.image(post_picture);
+                                postImageRef.current.image(data);
                                 postImageRef.current.openImage()
                             }else{
                                 postImageRef.current.closeImage();
@@ -167,7 +169,7 @@ function CreatePostLayout({props}){
                             if(data){
                                 //console.log(data);
                                 setPostImage(data);
-                                postImageRef.current.image(post_picture);
+                                postImageRef.current.image(data);
                                 postImageRef.current.openImage();
                             }else{
                                 postImageRef.current.closeImage();

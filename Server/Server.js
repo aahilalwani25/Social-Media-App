@@ -68,7 +68,16 @@ app.get('/api/getUserImageAndUsername/:u_id',(req,res)=>{
 })
 
 app.get('/api/post/:user_id/:audience/:post_description/:post_picture/:post_video/:location', (req,res)=>{
-    connection.query(``)
+    
+    const {user_id,audience,post_description,post_picture,post_video,location,}=req.params;
+    connection.query(`insert into post(post_description, post_picture, post_video, curr_date, curr_time, likes, audience, location) `+
+    `values('${post_description}',`+
+    `'${post_picture}',`+
+    `'${post_video}',current_date(),current_time(),`+
+    `0,${audience},${location});`,(err,row)=>{
+        if(err) console.log(err);
+        res.send(row);
+    });
 })
 
 app.listen(3000,()=>{
