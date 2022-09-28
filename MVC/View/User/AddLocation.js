@@ -13,7 +13,7 @@ function Map(){
 
             <GooglePlacesAutocomplete
                 query={{
-                    key:'AIzaSyDHjnHmIMwBOtzMbNV7SuNIjgCxvo8jceU',
+                    key:'API_KEY',
                     language:'en'
                 }}
                 

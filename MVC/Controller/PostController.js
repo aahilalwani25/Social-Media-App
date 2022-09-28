@@ -22,7 +22,7 @@ export class PostController{
             aspect: [4, 3],
             quality: 1,
             });
-        
+        console.log(result);
         //if pic not selected, return uri
         if(!result.cancelled) return result;
     }
@@ -34,7 +34,7 @@ export class PostController{
             aspect: [4, 3],
             quality: 1,
         });
-
+        console.log(result);
         if(!result.cancelled) return result;
 
     }
@@ -50,9 +50,7 @@ export class PostController{
         post.setVideo(post_video);
 
 
-        const result=await axios.get(`http://192.168.2.106:3000/api/post/`+
-        `${user_id}/${post.getAudience()}/${post.getDescription()}/${post.getPic()}/`+
-        `${post.getVideo()}/${post.getLocation()}`);
+        const result= await axios.get(`http://192.168.2.106:3000/api/post/${user_id}/${post.getAudience()}/${post.getDescription()}/${post.getPic()}/${post.getVideo()}/${post.getLocation()}`);
         const res=result.data;
 
         if(res){

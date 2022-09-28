@@ -25,24 +25,24 @@ export  class Home extends React.Component{
     componentDidMount(){
         //get Posts
         let postController=new PostController();
-        AsyncStorage.getItem('id')
-        .then(value=>{
-            if(value!=null){
+        // AsyncStorage.getItem('id')
+        // .then(value=>{
+        //     if(value!=null){
 
-                postController.getUserPost(value)
-                .then(res=>res.data)
-                .then(val=>{
-                    val.forEach(obj => {
-                        for(const key in obj){
-                            if(Object.keys(this.state)===key){ //OR this.state[key]!=null
-                                this.setState({key: obj[key]});
-                            }
-                        }
-                    });
-                }).catch(err=>console.log(err));
-                this.postArray.push(this.state);
-            }
-        })
+        //         postController.getUserPost(value)
+        //         .then(res=>res.data)
+        //         .then(val=>{
+        //             val.forEach(obj => {
+        //                 for(const key in obj){
+        //                     if(Object.keys(this.state)===key){ //OR this.state[key]!=null
+        //                         this.setState({key: obj[key]});
+        //                     }
+        //                 }
+        //             });
+        //         }).catch(err=>console.log(err));
+        //         this.postArray.push(this.state);
+        //     }
+        // })
         
         
     }

@@ -168,7 +168,9 @@ function CreatePostLayout({props}){
                         postController.openCamera().then(res=>res.uri)
                         .then((data)=>{
                             if(data){
-                                //console.log(data);
+                                //console.log(data.length);
+                                
+                                //console.log(arr);
                                 setPostImage(data);
                                 postImageRef.current.image(data);
                                 postImageRef.current.openImage();
@@ -196,7 +198,7 @@ function CreatePostLayout({props}){
                             }else{
                                 Alert.alert('Post NOT Created!');
                             }
-                        }).catch(err=>console.log(err))
+                        })
                     }
                     >
                         <Text style={[{color:'white'}, styles.buttonTextSize]}>Create Post</Text>
