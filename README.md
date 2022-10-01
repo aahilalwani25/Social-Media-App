@@ -8,4 +8,4 @@ The features implemented so far:
 
 The database used: MYSQL
 
-Server language: nodejs, expressjs, javascript
+Server language: nodejs, expressjs
